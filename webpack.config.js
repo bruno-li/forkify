@@ -30,7 +30,7 @@ module.exports = {
       {
         // regular expression to look all fules with .js extension
         test: /\.js/,
-        // excludes the node modules files so babel it does not get apply to all .js files inside the node modules folder
+        // excludes node modules files for babel not to apply to all .js files
         exclude: /node_modules/,
         use: {
           // if a .js found, it will load the loader
