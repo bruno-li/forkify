@@ -2,7 +2,9 @@
 /* eslint-disable no-console */
 
 import Search from './models/Search';
-import { elements } from './views/base';
+// import from base.js elements and reusable functions
+import { elements, renderLoader, clearLoader } from './views/base';
+
 // export all variables from searchView module
 import * as searchView from './views/searchView';
 
@@ -21,17 +23,21 @@ const controlSearch = async () => {
 
   // check if query was entered
   if (query) {
-    // new search object and add to state
+    // 1.new search object and add to state
     state.search = new Search(query);
 
-    // set up UI to display results
+    // 2.set up UI to display results
+    // clear previous search
     searchView.clearInput();
     searchView.clearResults();
+    // attach the loader to the parent element once user hit search
+    renderLoader(elements.searchRes);
 
-    // search for recipes
+    // 3.search for recipes
     await state.search.getResults();
 
-    // render UI with
+    // 4.render UI with
+    clearLoader();
     searchView.renderResults(state.search.results);
   }
 };
