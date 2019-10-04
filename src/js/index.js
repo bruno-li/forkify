@@ -47,3 +47,17 @@ elements.searchForm.addEventListener('submit', (e) => {
   e.preventDefault();
   controlSearch();
 });
+
+// event delegation to the parent to listen for dynamic pagination buttons
+elements.searchRecipePages.addEventListener('click', (e) => {
+  // use closest method to allow user to click only the buttons and no the icons or text
+  const btn = e.target.closest('.btn-inline');
+  if (btn) {
+    // read the data attribute from element and stores in the variable
+    const goToPage = parseInt(btn.dataset.goto, 10);
+    // clear the search results
+    searchView.clearResults();
+
+    searchView.renderResults(state.search.results, goToPage);
+  }
+});

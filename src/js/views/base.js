@@ -9,6 +9,7 @@ export const elements = {
   searchForm: document.querySelector('.search'),
   searchResultList: document.querySelector('.results__list'),
   searchRes: document.querySelector('.results'),
+  searchRecipePages: document.querySelector('.results__pages'),
 };
 
 // re-usable loader from CSS loader class

@@ -14,6 +14,7 @@ export const clearInput = () => {
 // clear the results returned from user search
 export const clearResults = () => {
   elements.searchResultList.innerHTML = '';
+  elements.searchRecipePages.innerHTML = '';
 };
 
 // truncate recipe title
@@ -59,7 +60,56 @@ const renderRecipe = (recipe) => {
   elements.searchResultList.insertAdjacentHTML('beforeend', markup);
 };
 
-export const renderResults = (recipes) => {
-  // loop through result, and call renderRecipe function and pass every recipe from the object
-  recipes.forEach(renderRecipe);
+// creates the next and prev button. type: 'prev' or 'next'
+const createButton = (page, type) => `
+<!-- data-goTo attribute - allow us to link the pages to prev or next -->
+ <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+
+   <!-- render the current page in the button-->
+    <span>Page ${type === 'prev' ? page - 1 : page + 1}
+    </span>
+
+<!-- renders the prev or next icon depending on the type variable value  -->
+    <svg class="search__icon">
+        <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+    </svg>
+</button>
+`;
+
+// render buttons for next page recipes
+const renderButtons = (page, numResults, recipePerPage) => {
+  /**  check how many page in total by dividing
+  the total of recipes from the API call with how many recipe per page we want */
+  const pages = Math.ceil(numResults / recipePerPage); // ceil method to round number up (4.1 = 5).
+
+  let button;
+  if (page === 1 && pages > 1) {
+    // Only button to go next page
+    button = createButton(page, 'next');
+  } else if (page < pages) {
+    // Both buttons available
+    button = `
+      ${createButton(page, 'prev')}
+       ${createButton(page, 'next')}
+    `;
+  } else if (page === pages && pages > 1) {
+    // Only buttin to go to prev page
+    button = createButton(page, 'prev');
+  }
+
+  // insert the elements create to the DOM
+  elements.searchRecipePages.insertAdjacentHTML('afterBegin', button);
+};
+
+export const renderResults = (recipes, page = 1, recipesPerPage = 10) => {
+  // render only 10 recipes per page
+  const start = (page - 1) * recipesPerPage; // variable to store the start index of the array
+  const end = page * recipesPerPage; // variable to store the last index per page to allow only 10
+
+  // 1. slice the recipes to create a new array with max 10 recipes
+  // 2. loop through result, and call renderRecipe function and pass every recipe from the object
+  recipes.slice(start, end).forEach(renderRecipe);
+
+  // render pagination buttons
+  renderButtons(page, recipes.length, recipesPerPage);
 };
