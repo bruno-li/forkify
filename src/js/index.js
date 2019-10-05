@@ -4,9 +4,10 @@
 import Search from './models/Search';
 // import from base.js elements and reusable functions
 import { elements, renderLoader, clearLoader } from './views/base';
-
-// export all variables from searchView module
+// import all variables from searchView module
 import * as searchView from './views/searchView';
+// import the recipe fetched from API
+import Recipe from './models/Recipe';
 
 /** Global state of the app
   * - Search object
@@ -15,6 +16,11 @@ import * as searchView from './views/searchView';
   * - Liked recipes
  */
 const state = {};
+
+
+/** ***************
+* SEARCH CONTROLLER
+* ************** */
 
 // fires up if user enter a search query
 const controlSearch = async () => {
@@ -61,3 +67,10 @@ elements.searchRecipePages.addEventListener('click', (e) => {
     searchView.renderResults(state.search.results, goToPage);
   }
 });
+
+/** ***************
+* RECIPE CONTROLLER
+* ************** */
+const recipe = new Recipe(46956);
+recipe.getRecipe();
+console.log(recipe);
