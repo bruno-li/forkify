@@ -28,6 +28,7 @@ const controlSearch = async () => {
   // get query from view
   const query = searchView.getInput();
 
+
   // check if query was entered
   if (query) {
     // 1.new search object and add to state
@@ -58,6 +59,7 @@ elements.searchForm.addEventListener('submit', (e) => {
   e.preventDefault();
   controlSearch();
 });
+
 
 // event delegation to the parent to listen for dynamic pagination buttons
 elements.searchRecipePages.addEventListener('click', (e) => {
@@ -99,7 +101,6 @@ const controlRecipe = async () => {
 
 
       // render recipe to UI
-      console.log(state.recipe);
     } catch (error) {
       alert('error processing recipe');
     }
